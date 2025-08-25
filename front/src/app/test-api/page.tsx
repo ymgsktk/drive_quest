@@ -11,5 +11,5 @@ export default function ApiTest() {
       .catch(err => setMsg(err.message));
   }, []);
 
-  return <div>APIからのレスポンス: {msg}</div>;
+  return <div>APIからのレスポンスです！: {msg}</div>;
 }
