@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8
+    container_name: drive-quest-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword   # root のパスワード
+      MYSQL_DATABASE: app_development     # デフォルト DB
+      MYSQL_USER: app                     # Rails から接続するユーザー
+      MYSQL_PASSWORD: apppassword         # Rails から接続するパスワード
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  backend:
+    build: ./back
+    command: bash -c "rm -f tmp/pids/server.pid && bin/rails db:create db:migrate && bin/rails s -b 0.0.0.0 -p 3050"
+
+    volumes:
+      - ./back:/rails
+    ports:
+      - "3050:3050"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_USER: app
+      MYSQL_PASSWORD: password
+
+
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    volumes:
+      - ./front:/app
+      - /app/node_modules
+    ports:
+      - "3080:3000"
+    depends_on:
+      - backend
+
+
+volumes:
+  db_data:
