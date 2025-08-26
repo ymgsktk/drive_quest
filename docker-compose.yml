@@ -23,7 +23,8 @@ services:
 
   backend:
     build: ./back
-    command: bash -c "rm -f tmp/pids/server.pid && bin/rails db:create db:migrate && bin/rails s -b 0.0.0.0 -p 3050"
+    entrypoint: ""
+    command: sh -c "rm -f tmp/pids/server.pid && bin/rails db:create db:migrate && bin/rails s -b 0.0.0.0 -p 3050"
 
     volumes:
       - ./back:/rails
