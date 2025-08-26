@@ -12,6 +12,7 @@ RUN apt-get update -qq && \
       libjemalloc2 \
       libvips \
       default-mysql-client && \
+      bash && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # build stage
