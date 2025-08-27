@@ -1,3 +1,5 @@
+
+
 version: "3.9"
 
 services:
@@ -23,6 +25,9 @@ services:
 
   backend:
     build: ./back
+    working_dir: /rails
+    tty: true
+    stdin_open: true
     entrypoint: ""
     command: sh -c "rm -f tmp/pids/server.pid && bin/rails db:create db:migrate && bin/rails s -b 0.0.0.0 -p 3050"
 
