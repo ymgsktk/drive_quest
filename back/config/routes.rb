@@ -4,10 +4,10 @@ Rails.application.routes.draw do
   end
 end
 
+# config/routes.rb
 Rails.application.routes.draw do
-  namespace :api do
-    resources :tourist_spots, only: [:index]
-  end
+  get "tourist_spots", to: "tourist_spots#index"
 end
+
 
 
