@@ -4,4 +4,10 @@ Rails.application.routes.draw do
   end
 end
 
+Rails.application.routes.draw do
+  namespace :api do
+    resources :tourist_spots, only: [:index]
+  end
+end
+
 
