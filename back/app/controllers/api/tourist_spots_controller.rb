@@ -11,15 +11,16 @@ module Api
       radius = params[:radius] || 5000 # 5km以内
 
       url = URI("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{lat},#{lng}&radius=#{radius}&type=tourist_attraction&key=#{api_key}")
-
       response = Net::HTTP.get(url)
       data = JSON.parse(response)
 
-      spots = data['results'].map do |place|
+      spots = data['results'].each_with_index.map do |place, index|
         {
+          id: index + 1,
           name: place['name'],
-          lat: place['geometry']['location']['lat'],
-          lng: place['geometry']['location']['lng']
+          description: "ここは #{place['name']} です。観光名所として有名です。",
+          url: place['website'] || place['url'] || "#",
+          image: place['photos']&.first ? "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=#{place['photos'].first['photo_reference']}&key=#{api_key}" : "https://placehold.co/100x100/A0AEC0/ffffff?text=Image"
         }
       end
 
