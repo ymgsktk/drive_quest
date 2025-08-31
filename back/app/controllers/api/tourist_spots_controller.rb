@@ -15,7 +15,7 @@ module Api
       response = Net::HTTP.get(url)
       data = JSON.parse(response)
 
-      # スポット情報作成
+      # スポット情報を作成
       spots = data['results'].each_with_index.map do |place, index|
         {
           id: index + 1,
