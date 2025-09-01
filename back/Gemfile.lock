@@ -153,6 +153,8 @@ GEM
     nio4r (2.7.4)
     nokogiri (1.18.9-aarch64-linux-gnu)
       racc (~> 1.4)
+    nokogiri (1.18.9-x64-mingw-ucrt)
+      racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-gnu)
       racc (~> 1.4)
     ostruct (0.6.3)
@@ -274,11 +276,14 @@ GEM
       ostruct
     stringio (3.1.7)
     thor (1.4.0)
+    thruster (0.1.15)
     thruster (0.1.15-aarch64-linux)
     thruster (0.1.15-x86_64-linux)
     timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2025.2)
+      tzinfo (>= 1.0.0)
     unicode-display_width (3.1.5)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
@@ -292,6 +297,7 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  x64-mingw-ucrt
   x86_64-linux
 
 DEPENDENCIES

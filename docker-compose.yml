@@ -44,7 +44,8 @@ services:
       MYSQL_PORT: 3306
       MYSQL_USER: app
       MYSQL_PASSWORD: password
-
+    env_file:
+      - ./.env  
 
   frontend:
     build:
@@ -57,7 +58,8 @@ services:
       - "3080:3000"
     depends_on:
       - backend
-
+    env_file:
+      - ./.env
 
 volumes:
   db_data:
