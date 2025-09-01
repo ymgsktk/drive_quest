@@ -53,6 +53,9 @@ Rails.application.configure do
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
 
+  # Rails のホスト制限を開発環境では無効化
+  config.hosts.clear
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
