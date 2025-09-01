@@ -1,10 +1,20 @@
 Rails.application.routes.draw do
-  get "sessions/new"
-  get "sessions/create"
-  get "sessions/destroy"
-  namespace :api do
-    get :ping, to: 'ping#index'
+  post   "sessions", to: "sessions#create" # ログイン処理(SessionsController#create)
+  delete "sessions", to: "sessions#destroy" # ログアウト処理(SessionsController#destroy)
+
+  namespace :api, defaults: { format: :json } do #front/src/app/test-apiの"http://localhost:3050/api/"
+    get :ping, to: "ping#index" #動作テスト部分(ping_controller.rbで何をフロントに送信するかを記述する)
+
+    resources :adventure_records, only: [:create, :index] #create:記録作成、index:記録一覧の取得
+    get "total_record", to: "total_records#show"
   end
+
+#記録ページ用
+namespace :api do
+  get "runs/stats", to: "runs#stats" #集計（最新＋累計）
+  get "runs", to: "runs#index" #リスト表示用
+end
+  
 end
 
 
