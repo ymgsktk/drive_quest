@@ -9,11 +9,14 @@ Rails.application.routes.draw do
     get "total_record", to: "total_records#show"
   end
 
-#記録ページ用
-namespace :api do
-  get "runs/stats", to: "runs#stats" #集計（最新＋累計）
-  get "runs", to: "runs#index" #リスト表示用
-end
+  
+  namespace :api do
+    # 記録ページ用
+    get "runs/stats", to: "runs#stats" # 集計（最新＋累計）
+    get "runs", to: "runs#index" # リスト表示用
+    # ドライブ中画面用
+    get "quests", to: "quests#index" # クエスト選択
+  end
   
 end
 

@@ -1,4 +1,4 @@
-# app/controllers/api/total_records_controller.rb
+# ユーザーの全記録
 module Api
   class TotalRecordsController < ApplicationController
     before_action :set_current_user

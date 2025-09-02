@@ -1,4 +1,4 @@
-# app/controllers/api/adventure_records_controller.rb
+# 一回のドライブの記録
 module Api
   class AdventureRecordsController < ApplicationController
     before_action :set_current_user
