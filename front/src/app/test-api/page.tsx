@@ -1,15 +1,9 @@
-"use client";
-import { useEffect, useState } from "react";
-
-export default function ApiTest() {
-  const [msg, setMsg] = useState("");
-
-  useEffect(() => {
-    fetch("http://localhost:3050/api/ping") // フロントからバックエンドへのリクエスト
-      .then(res => res.json())
-      .then(data => setMsg(data.message))
-      .catch(err => setMsg(err.message));
-  }, []);
-
-  return <div>APIからのレスポンスです！: {msg}</div>;
+// src/app/test-api/page.tsx
+export default function ApiTestPage() {
+  return (
+    <div style={{ padding: 24 }}>
+      <h1>APIテストページ</h1>
+      <p>ここはAPIの挙動確認用です（本番UIは /records）。</p>
+    </div>
+  );
 }
