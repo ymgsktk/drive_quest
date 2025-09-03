@@ -16,8 +16,11 @@ Rails.application.routes.draw do
     get "runs", to: "runs#index" # リスト表示用
     # ドライブ中画面用
     get "quests", to: "quests#index" # クエスト選択
+    get "/ping", to: "ping#index"
+    get "/tourist_spots", to: "tourist_spots#index"
   end
   
 end
+
 
 
