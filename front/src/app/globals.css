@@ -1,49 +1,92 @@
-@import "tailwindcss";
+/* ==== DQ風テーマ（Google Fonts は next/font で読み込み） ==== */
 
-:root {
-  --background: #ffffff; /* 背景は白 */
-  --foreground: #000000; /* 文字は黒に固定 */
+:root{
+  --dq-green: #2f5d37;
+  --dq-blue1: #4d6bff;
+  --dq-blue2: #36b4ff;
+  --dq-yellow: #ffd400;
+  --dq-card: rgba(255,255,255,0.08);
+  --dq-border: rgba(255,255,255,0.18);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* 本文はドット調（DotGothic16） */
+html, body {
+  background: var(--dq-green);
+  color: #fff;
+  font-family: var(--font-dot), system-ui, sans-serif;
+  min-height: 100%;
 }
 
-/* ダークモードも無視して黒に固定 */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #5f8f4e;
-    --foreground: #000000;
-  }
+/* タイトル等に付ける 8bit ピクセルフォント（Press Start 2P） */
+.pixel {
+  font-family: var(--font-pixel), system-ui, sans-serif !important;
+  letter-spacing: 2px;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: 'MisakiGothic', Arial, Helvetica, sans-serif;
+/* コンテナ */
+.dq-container { max-width: 1040px; margin: 0 auto; padding: 24px; }
+
+/* 見出し */
+.dq-title { font-weight: 900; font-size: 40px; margin: 8px 0 4px; }
+.dq-sub { opacity: .9; margin: 16px 0; font-size: 28px; }
+
+/* ボタン */
+.dq-btn {
+  appearance: none;
+  border: 2px solid #1a2a5a;
+  border-radius: 14px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, var(--dq-blue1), var(--dq-blue2));
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  box-shadow: inset 0 -4px rgba(0,0,0,.2), 0 3px 0 #1a2a5a;
+  transition: transform .03s ease;
+  cursor: pointer;
+}
+.dq-btn:active { transform: translateY(2px); box-shadow: inset 0 -2px rgba(0,0,0,.2), 0 1px 0 #1a2a5a; }
+
+/* カード */
+.dq-card {
+  background: var(--dq-card);
+  border: 1px solid var(--dq-border);
+  border-radius: 18px;
+  padding: 16px;
 }
 
-
-@font-face {
-  font-family: 'MisakiGothic';
-  src: url('../fonts/misaki_gothic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+/* バッジ */
+.dq-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.35);
+  border: 1px solid var(--dq-border);
+  font-size: 13px;
 }
 
-@font-face {
-  font-family: 'MisakiMincho';
-  src: url('../fonts/misaki_mincho.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+/* 集計カード */
+.dq-stat { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 16px 0 20px; }
+.dq-stat > div { border-radius: 16px; padding: 12px; background: var(--dq-card); border:1px solid var(--dq-border); }
+.dq-stat .label { opacity: .85; font-size: 13px; margin-bottom: 4px; }
+.dq-stat .value { font-size: 22px; font-weight: 800; }
 
-@font-face {
-  font-family: 'MisakiGothic2nd';
-  src: url('../fonts/misaki_gothic_2nd.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+/* リスト */
+.dq-list { display: grid; gap: 12px; list-style: none; padding: 0; margin: 0; }
+.dq-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.dq-meta { opacity: .85; font-size: 13px; }
+
+/* 入力ボックス（ホーム） */
+.dq-input {
+  width: min(520px, 90vw);
+  height: 56px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--dq-border);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 20px;
+  line-height: 1.2;
+  outline: none;
+  box-sizing: border-box;
 }
+.dq-input::placeholder { color: rgba(255,255,255,0.6); }
