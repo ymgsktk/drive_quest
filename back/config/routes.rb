@@ -3,9 +3,8 @@ Rails.application.routes.draw do
   post   "sessions", to: "sessions#create"   # ログイン
   delete "sessions", to: "sessions#destroy"  # ログアウト
 
-  # API グループ（すべてJSON）
+  # API（すべて JSON 固定）
   namespace :api, defaults: { format: :json } do
-    
     # 動作確認
     get "/ping", to: "ping#index"
 
@@ -19,10 +18,9 @@ Rails.application.routes.draw do
 
     # ドライブ画面用
     get "quests", to: "quests#index"
-    get "/tourist_spots", to: "tourist_spots#index"
+    get "tourist_spots", to: "tourist_spots#index"
   end
 end
-
 
 
 
