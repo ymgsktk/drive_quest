@@ -1,5 +1,4 @@
-/* ==== DQ風テーマ ==== */
-@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap');
+/* ==== DQ風テーマ（Google Fonts は next/font で読み込み） ==== */
 
 :root{
   --dq-green: #2f5d37;
@@ -10,17 +9,17 @@
   --dq-border: rgba(255,255,255,0.18);
 }
 
-/* ここで全体の見た目を決定（後半で上書きされないようこの定義を使う） */
+/* 本文はドット調（DotGothic16） */
 html, body {
-  background: var(--dq-green) !important;
+  background: var(--dq-green);
   color: #fff;
-  font-family: 'DotGothic16', system-ui, sans-serif;
+  font-family: var(--font-dot), system-ui, sans-serif;
   min-height: 100%;
 }
 
-/* 見出しの8bit感（数字用フォント） */
+/* タイトル等に付ける 8bit ピクセルフォント（Press Start 2P） */
 .pixel {
-  font-family: 'Press Start 2P', system-ui, sans-serif;
+  font-family: var(--font-pixel), system-ui, sans-serif !important;
   letter-spacing: 2px;
 }
 
@@ -29,16 +28,18 @@ html, body {
 
 /* 見出し */
 .dq-title { font-weight: 900; font-size: 40px; margin: 8px 0 4px; }
-.dq-sub { opacity: .9; margin-bottom: 16px; }
+.dq-sub { opacity: .9; margin: 16px 0; font-size: 28px; }
 
-/* ボタン（クエスト風） */
+/* ボタン */
 .dq-btn {
   appearance: none;
   border: 2px solid #1a2a5a;
   border-radius: 14px;
-  padding: 18px 22px;
+  padding: 14px 18px;
   background: linear-gradient(135deg, var(--dq-blue1), var(--dq-blue2));
-  color: #fff; font-weight: 700; font-size: 18px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
   box-shadow: inset 0 -4px rgba(0,0,0,.2), 0 3px 0 #1a2a5a;
   transition: transform .03s ease;
   cursor: pointer;
@@ -53,7 +54,7 @@ html, body {
   padding: 16px;
 }
 
-/* 小バッジ */
+/* バッジ */
 .dq-badge {
   display: inline-block;
   padding: 6px 10px;
@@ -69,11 +70,12 @@ html, body {
 .dq-stat .label { opacity: .85; font-size: 13px; margin-bottom: 4px; }
 .dq-stat .value { font-size: 22px; font-weight: 800; }
 
+/* リスト */
 .dq-list { display: grid; gap: 12px; list-style: none; padding: 0; margin: 0; }
 .dq-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .dq-meta { opacity: .85; font-size: 13px; }
 
-/* === 入力ボックス（ホームのユーザー名） === */
+/* 入力ボックス（ホーム） */
 .dq-input {
   width: min(520px, 90vw);
   height: 56px;
@@ -87,7 +89,4 @@ html, body {
   outline: none;
   box-sizing: border-box;
 }
-
-.dq-input::placeholder {
-  color: rgba(255,255,255,0.6);
-}
+.dq-input::placeholder { color: rgba(255,255,255,0.6); }

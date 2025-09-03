@@ -1,79 +1,113 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Press_Start_2P } from 'next/font/google';
 
-export default function HomePage() {
-  const [usernameDisplay, setUsernameDisplay] = useState("");
-  const [isValid, setIsValid] = useState(false);
+
+// タイトル用：Press Start 2P
+const press = Press_Start_2P({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-press',
+});
+
+const FIXED_USERNAME = 'nttdata_001';
+const LS_KEY = 'dq_username';
+
+export default function Home() {
   const router = useRouter();
-
-  const FORCED = "nttdata_001";
+  const [name, setName] = useState('');
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    setIsValid(usernameDisplay.trim() === FORCED);
-  }, [usernameDisplay]);
+    try {
+      const v = localStorage.getItem(LS_KEY) || '';
+      if (v) setName(v);
+    } catch (_) {}
+    setHydrated(true);
+  }, []);
 
-  const saveAnd = (path: string) => {
+  const isValid = name.trim() === FIXED_USERNAME;
+
+  const persistAnd = (next: () => void) => {
+    try {
+      localStorage.setItem(LS_KEY, FIXED_USERNAME);
+    } catch (_) {}
+    next();
+  };
+
+  const handleStart = () => {
     if (!isValid) return;
-    localStorage.setItem("dq_username", FORCED);
-    router.push(path);
+    persistAnd(() => router.push('/drive-quest'));
+  };
+
+  const goRecords = () => {
+    if (!isValid) return;
+    persistAnd(() => router.push('/records'));
   };
 
   return (
-    <div
+    <main
+      className="dq-container"
       style={{
-        background: "var(--dq-green)",
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        minHeight: '72vh',
+        display: 'grid',
+        placeItems: 'center',
       }}
     >
       <div
-        className="dq-container"
-        style={{ maxWidth: 480, width: "100%", textAlign: "center" }}
+        style={{
+          width: 'min(760px, 92vw)',
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+        }}
       >
-        <h1 className="dq-title">〜ドライブクエスト〜</h1>
+        {/* ← ここで Press Start 2P を確実適用 */}
+       <h1 className="dq-title">〜ドライブクエスト〜</h1>
+<div className="dq-title-sub">DRIVE QUEST</div>
 
-        {/* 入力 */}
-        <div style={{ marginTop: 24 }}>
-          <label
-            className="dq-sub"
-            style={{ display: "block", marginBottom: 8, textAlign: "left" }}
-          >
-            ユーザー名
-          </label>
-          <input
-            value={usernameDisplay}
-            onChange={(e) => setUsernameDisplay(e.target.value)}
-            placeholder="例: nttdata_001"
-            className="dq-input"
-            style={{ width: "100%", textAlign: "center" }}
-          />
-          {!isValid && usernameDisplay.length > 0 && (
-            <div className="dq-meta" style={{ marginTop: 8, color: "#f88" }}>
-              正しいユーザー名を入力してください
-            </div>
-          )}
-        </div>
+        <label
+          className="dq-sub"
+          htmlFor="username"
+          style={{
+            display: 'block',
+            marginTop: 24,
+            textAlign: 'center',
+            width: '100%',
+          }}
+        >
+          ユーザー名
+        </label>
 
-        {/* ボタン（横並び） */}
+        <input
+          id="username"
+          className="dq-input"
+          placeholder="例: nttdata_001"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
         <div
           style={{
-            display: "flex",
+            display: 'flex',
             gap: 16,
-            marginTop: 32,
-            justifyContent: "center",
+            marginTop: 24,
+            justifyContent: 'center',
+            flexWrap: 'wrap',
           }}
         >
           <button
             className="dq-btn"
-            onClick={() => saveAnd("/quest")}
+            onClick={handleStart}
             disabled={!isValid}
             style={{
-              opacity: isValid ? 1 : 0.5,
-              cursor: isValid ? "pointer" : "not-allowed",
+              opacity: isValid ? 1 : 0.6,
+              pointerEvents: isValid ? 'auto' : 'none',
+              minWidth: 220,
             }}
           >
             冒険を開始する
@@ -81,17 +115,30 @@ export default function HomePage() {
 
           <button
             className="dq-btn"
-            onClick={() => saveAnd("/records")}
+            onClick={goRecords}
             disabled={!isValid}
             style={{
-              opacity: isValid ? 1 : 0.5,
-              cursor: isValid ? "pointer" : "not-allowed",
+              opacity: isValid ? 1 : 0.6,
+              pointerEvents: isValid ? 'auto' : 'none',
+              minWidth: 220,
             }}
           >
             記録ページへ
           </button>
         </div>
+
+        {!isValid && (
+          <p
+            className="dq-sub"
+            style={{
+              marginTop: 12,
+              textAlign: 'center',
+              opacity: 0.85,
+            }}
+          >
+          </p>
+        )}
       </div>
-    </div>
+    </main>
   );
 }
