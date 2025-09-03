@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff; /* 背景は白 */
+  --foreground: #000000; /* 文字は黒に固定 */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ダークモードも無視して黒に固定 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #5f8f4e;
+    --foreground: #000000;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'MisakiGothic', Arial, Helvetica, sans-serif;
+}
+
+
+@font-face {
+  font-family: 'MisakiGothic';
+  src: url('../fonts/misaki_gothic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MisakiMincho';
+  src: url('../fonts/misaki_mincho.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MisakiGothic2nd';
+  src: url('../fonts/misaki_gothic_2nd.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
