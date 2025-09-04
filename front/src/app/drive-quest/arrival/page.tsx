@@ -5,8 +5,11 @@ import { useRouter } from "next/navigation";
 
 type LatLng = { lat: number; lng: number };
 
-const mapContainerStyle: React.CSSProperties = { width: "100%", height: "400px", borderRadius: "12px" };
-const center: LatLng = { lat: 35.0116, lng: 135.7681 };
+const mapContainerStyle: React.CSSProperties = {
+  width: "100%",
+  height: "400px",
+  borderRadius: "12px",
+};
 
 // localStorage に到着地点を保存
 const saveArrivalPoint = (loc: LatLng) => {
@@ -20,9 +23,20 @@ export default function AdventureScreen() {
   const router = useRouter();
   const [selectedLocation, setSelectedLocation] = useState<LatLng | null>(null);
   const [loading, setLoading] = useState(false);
+  const [center, setCenter] = useState<LatLng>({ lat: 35.0116, lng: 135.7681 }); // ← デフォルトは京都駅あたり
+
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstance = useRef<google.maps.Map | null>(null);
   const markerInstance = useRef<google.maps.Marker | null>(null);
+
+  // --- localStorage からルート履歴を読み込んで center を更新 ---
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const history: LatLng[] = JSON.parse(localStorage.getItem("routeHistory") || "[]");
+    if (history.length > 0) {
+      setCenter(history[history.length - 1]); // 最後の座標を中心に
+    }
+  }, []);
 
   useEffect(() => {
     if (!mapRef.current || !(window as any).google) return;
@@ -30,6 +44,8 @@ export default function AdventureScreen() {
 
     if (!mapInstance.current) {
       mapInstance.current = new g.maps.Map(mapRef.current, { center, zoom: 14 });
+    } else {
+      mapInstance.current.setCenter(center); // center が変わったら地図を更新
     }
 
     const listener = mapInstance.current.addListener("click", (e: google.maps.MapMouseEvent) => {
@@ -52,7 +68,7 @@ export default function AdventureScreen() {
       }
       mapInstance.current = null;
     };
-  }, []);
+  }, [center]); // ← center に依存するように変更
 
   const handleComplete = () => {
     if (!loading) {
@@ -60,7 +76,7 @@ export default function AdventureScreen() {
       if (selectedLocation) {
         saveArrivalPoint(selectedLocation);
       }
-      router.push("/drive-quest"); // ← ここでクエスト画面に戻る
+      router.push("/drive-quest");
     }
   };
 
@@ -68,7 +84,7 @@ export default function AdventureScreen() {
     <div className="mx-auto max-w-2xl space-y-8 px-4">
       {/* タイトル */}
       <h1 className="text-black text-4xl font-bold text-center mt-8 mb-4 font-misaki">
-        ドライブクエスト(仮)
+        ~ドライブクエスト~
       </h1>
       <h2 className="text-black text-xl text-center font-semibold mb-6 font-misaki">
         到着地点を入力
@@ -92,14 +108,14 @@ export default function AdventureScreen() {
           onClick={handleComplete}
           disabled={loading}
           className={`
-    flex h-16 items-center justify-center
-    bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500
-    text-black font-misaki text-lg font-bold
-    border border-black rounded-md
-    shadow-lg transition-transform duration-150
-    hover:scale-105 hover:shadow-xl active:scale-95
-    ${loading ? "opacity-50 cursor-not-allowed" : ""}
-  `}
+            flex h-16 items-center justify-center
+            bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500
+            text-black font-misaki text-lg font-bold
+            border border-black rounded-md
+            shadow-lg transition-transform duration-150
+            hover:scale-105 hover:shadow-xl active:scale-95
+            ${loading ? "opacity-50 cursor-not-allowed" : ""}
+          `}
         >
           冒険を進める
         </button>
@@ -113,14 +129,14 @@ export default function AdventureScreen() {
           }}
           disabled={loading}
           className={`
-        flex h-16 items-center justify-center
-        bg-gradient-to-r from-red-400 to-pink-500
-        text-white font-misaki text-lg font-bold
-        border border-black rounded-md
-        shadow-lg transition-transform duration-150
-        hover:scale-105 hover:shadow-xl active:scale-95
-        ${loading ? "opacity-50 cursor-not-allowed" : ""}
-      `}
+            flex h-16 items-center justify-center
+            bg-gradient-to-r from-red-400 to-pink-500
+            text-white font-jp text-lg font-bold
+            border border-black rounded-md
+            shadow-lg transition-transform duration-150
+            hover:scale-105 hover:shadow-xl active:scale-95
+            ${loading ? "opacity-50 cursor-not-allowed" : ""}
+          `}
         >
           冒険を終了する
         </button>

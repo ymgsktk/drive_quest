@@ -11,9 +11,58 @@ const mapContainerStyle: React.CSSProperties = { width: "100%", height: "400px",
 const center: LatLng = { lat: 35.0116, lng: 135.7681 };
 
 // --- モックAPI関数 ---
-const fetchTotalPoints = async (): Promise<number> => new Promise((resolve) => setTimeout(() => resolve(130), 500));
-const fetchQuests = async (): Promise<Quest[]> => new Promise((resolve) => setTimeout(() => resolve([{ id: 1, title: "2km進む", points: 30 }, { id: 2, title: "神社に行く", points: 50 }]), 500));
-const fetchTouristSpots = async (): Promise<TouristSpot[]> => new Promise((resolve) => setTimeout(() => resolve([{ id: 1, name: "〇〇喫茶店", description: "〇〇が有名な喫茶店。〜〜", url: "#", image: "https://placehold.co/100x100/A0AEC0/ffffff?text=Image" }, { id: 2, name: "〇〇神社", description: "〇〇が司る神社。〜〜", url: "#", image: "https://placehold.co/100x100/A0AEC0/ffffff?text=Image" }]), 500));
+async function fetchTotalPoints(): Promise<number> {
+  return new Promise((resolve) => setTimeout(() => resolve(130), 500));
+}
+
+
+async function fetchQuests(): Promise<Quest[]> {
+  try {
+    const res = await fetch("http://localhost:3050/api/quests");
+    console.log("HTTPステータス:", res.status, res.statusText); 
+
+    if (!res.ok) {
+      const errorText = await res.text(); 
+      console.error("サーバーエラー応答:", errorText);
+      throw new Error("Failed to fetch quests");
+    }
+
+    const data = await res.json();
+    console.log("サーバー応答データ:", data); 
+    return data.items;
+  } catch (error) {
+    console.error("fetchQuestsでのエラー:", error);
+    throw error;
+  }
+}
+
+
+async function fetchTouristSpots(): Promise<TouristSpot[]> {
+  try {
+    // localStorageからrouteHistoryを取得
+    const history: LatLng[] = JSON.parse(localStorage.getItem("routeHistory") || "[]");
+
+    // 最後の座標を取得（なければデフォルト座標を使う）
+    const lastLocation = history.length > 0 ? history[history.length - 1] : { lat: 35.0116, lng: 135.7681 };
+
+    // APIリクエスト
+    const res = await fetch(
+      `http://localhost:3050/api/tourist_spots?lat=${lastLocation.lat}&lng=${lastLocation.lng}&radius=3000`
+    );
+
+    if (!res.ok) throw new Error("Failed to fetch tourist spots");
+
+    const data = await res.json();
+    console.log("tourist_spots response:", data);
+
+    return Array.isArray(data) ? data : data.items ?? [];
+  } catch (error) {
+    console.error("fetchTouristSpotsでのエラー:", error);
+    return [];
+  }
+}
+
+
 
 export default function QuestSelectionScreen() {
   const router = useRouter();
@@ -25,7 +74,7 @@ export default function QuestSelectionScreen() {
   const mapInstance = useRef<google.maps.Map | null>(null);
   const directionsRenderer = useRef<google.maps.DirectionsRenderer | null>(null);
 
-  // データ取得 (モックAPI)
+  // データ取得
   useEffect(() => {
     const loadData = async () => {
       // localStorageから累計ポイントを取得
@@ -36,7 +85,8 @@ export default function QuestSelectionScreen() {
         const points = await fetchTotalPoints();
         setTotalPoints(points);
       }
-  
+
+      // クエストと観光地を取得
       const [questList, spotList] = await Promise.all([fetchQuests(), fetchTouristSpots()]);
       setQuests(questList);
       setSpots(spotList);
@@ -52,7 +102,6 @@ export default function QuestSelectionScreen() {
     directionsRenderer.current = new g.maps.DirectionsRenderer({ suppressMarkers: false });
     directionsRenderer.current.setMap(mapInstance.current);
 
-    // localStorageから過去ルートを取得
     const history: LatLng[] = JSON.parse(localStorage.getItem("routeHistory") || "[]");
     if (history.length >= 2) {
       const origin = history[0];
@@ -74,11 +123,9 @@ export default function QuestSelectionScreen() {
     setLoading(true);
     setTotalPoints((prev) => {
       const newPoints = prev !== null ? prev + quest.points : quest.points;
-      // localStorage に保存
       localStorage.setItem("totalPoints", newPoints.toString());
       return newPoints;
     });
-    // Arrival ページに遷移
     router.push("/drive-quest/arrival");
   };
 
@@ -86,7 +133,6 @@ export default function QuestSelectionScreen() {
     <div
       className="mx-auto max-w-2xl space-y-8 px-4 py-8"
       style={{
-        //backgroundImage: "url('/img/冒険背景.jpeg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -94,9 +140,7 @@ export default function QuestSelectionScreen() {
       }}
     >
       <div className="mx-auto max-w-2xl space-y-8">
-        <h1 className="text-black text-4xl font-bold text-center mt-8 mb-6">
-          〜ドライブクエスト〜
-        </h1>
+        <h1 className="text-black text-4xl font-bold text-center mt-8 mb-6">〜ドライブクエスト〜</h1>
 
         {/* 累計ポイント */}
         <div className="text-center">
@@ -123,24 +167,20 @@ export default function QuestSelectionScreen() {
                 onClick={() => handleQuestSelect(quest)}
                 disabled={loading}
                 className={`
-        relative flex h-24 w-full items-center justify-between
-        bg-gradient-to-r from-blue-400 to-indigo-500
-        text-white font-jp text-lg font-bold
-        border border-black rounded-md
-        px-4 transition-transform duration-150
-        hover:scale-105 hover:shadow-lg active:scale-95
-        ${loading ? "opacity-50 cursor-not-allowed" : ""}
-      `}
+                  relative flex h-24 w-full items-center justify-between
+                  bg-gradient-to-r from-blue-400 to-indigo-500
+                  text-white font-jp text-lg font-bold
+                  border border-black rounded-md
+                  px-4 transition-transform duration-150
+                  hover:scale-105 hover:shadow-lg active:scale-95
+                  ${loading ? "opacity-50 cursor-not-allowed" : ""}
+                `}
               >
                 <span>{quest.title}</span>
-                <span className="rounded-sm bg-yellow-400 px-2 py-1 text-sm font-bold text-gray-800">
-                  {quest.points}pt
-                </span>
+                <span className="rounded-sm bg-yellow-400 px-2 py-1 text-sm font-bold text-gray-800">{quest.points}pt</span>
               </button>
             ))}
           </div>
-
-
         </div>
 
         {/* これまでのルート */}
@@ -150,7 +190,6 @@ export default function QuestSelectionScreen() {
             <div ref={mapRef} style={mapContainerStyle} className="bg-gray-100"></div>
           </div>
         </div>
-
 
         {/* 観光地 */}
         <div>
@@ -165,11 +204,7 @@ export default function QuestSelectionScreen() {
                   rel="noopener noreferrer"
                   className="flex cursor-pointer flex-col md:flex-row items-center rounded-2xl bg-white p-4 shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl"
                 >
-                  <img
-                    src={spot.image}
-                    alt={spot.name}
-                    className="h-28 w-28 flex-shrink-0 rounded-xl object-cover mb-2 md:mb-0 md:mr-4"
-                  />
+                  <img src={spot.image} alt={spot.name} className="h-28 w-28 flex-shrink-0 rounded-xl object-cover mb-2 md:mb-0 md:mr-4" />
                   <div className="flex-grow">
                     <h3 className="text-lg font-bold mb-1">{spot.name}</h3>
                     <p className="text-sm text-gray-600">{spot.description}</p>
@@ -182,7 +217,6 @@ export default function QuestSelectionScreen() {
             )}
           </div>
         </div>
-
       </div>
     </div>
   );
