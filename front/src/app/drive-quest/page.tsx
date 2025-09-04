@@ -125,7 +125,7 @@ export default function QuestSelectionScreen() {
                 className={`
         relative flex h-24 w-full items-center justify-between
         bg-gradient-to-r from-blue-400 to-indigo-500
-        text-white font-misaki text-lg font-bold
+        text-white font-jp text-lg font-bold
         border border-black rounded-md
         px-4 transition-transform duration-150
         hover:scale-105 hover:shadow-lg active:scale-95
