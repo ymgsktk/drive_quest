@@ -1,4 +1,6 @@
-/* ==== DQ風テーマ（Google Fonts は next/font で読み込み） ==== */
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap');
+
+@import "tailwindcss";
 
 :root{
   --dq-green: #2f5d37;
