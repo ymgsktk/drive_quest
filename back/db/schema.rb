@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_01_145829) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_05_161412) do
   create_table "adventure_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "points"
@@ -24,10 +24,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_01_145829) do
   end
 
   create_table "quests", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "description"
+    t.string "description", limit: 191
     t.integer "point"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["description"], name: "index_quests_on_description", unique: true
   end
 
   create_table "total_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
