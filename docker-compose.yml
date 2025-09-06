@@ -44,6 +44,14 @@ services:
       MYSQL_PORT: 3306
       MYSQL_USER: app
       MYSQL_PASSWORD: password
+
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      USE_AI_FOR_SEEDS: "true"     # 本番/CIは "false" 推奨
+      QUEST_GEN_MODEL: gpt-4o-mini
+      QUEST_GEN_COUNT: "5"
+      QUEST_LANG: "ja"
+      QUEST_TEMP: "1.2" 
+
     env_file:
       - ./.env  
 
