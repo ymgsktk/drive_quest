@@ -1,25 +1,25 @@
 Rails.application.routes.draw do
-  # セッション管理
-  post   "sessions", to: "sessions#create"   # ログイン
-  delete "sessions", to: "sessions#destroy"  # ログアウト
+  post   "sessions", to: "sessions#create" # ログイン処理(SessionsController#create)
+  delete "sessions", to: "sessions#destroy" # ログアウト処理(SessionsController#destroy)
 
-  # API（すべて JSON 固定）
-  namespace :api, defaults: { format: :json } do
-    # 動作確認
-    get "/ping", to: "ping#index"
+  namespace :api, defaults: { format: :json } do #front/src/app/test-apiの"http://localhost:3050/api/"
+    get :ping, to: "ping#index" #動作テスト部分(ping_controller.rbで何をフロントに送信するかを記述する)
 
-    # 記録関連
-    resources :adventure_records, only: [:create, :index]
+    resources :adventure_records, only: [:create, :index] #create:記録作成、index:記録一覧の取得
     get "total_record", to: "total_records#show"
-
-    # 記録ページ用
-    get "runs/stats", to: "runs#stats"
-    get "runs", to: "runs#index"
-
-    # ドライブ画面用
-    get "quests", to: "quests#index"
-    get "tourist_spots", to: "tourist_spots#index"
   end
+
+  
+  namespace :api do
+    # 記録ページ用
+    get "runs/stats", to: "runs#stats" # 集計（最新＋累計）
+    get "runs", to: "runs#index" # リスト表示用
+    # ドライブ中画面用
+    get "quests", to: "quests#index" # クエスト選択
+    get "/ping", to: "ping#index"
+    get "/tourist_spots", to: "tourist_spots#index"
+  end
+  
 end
 
 
