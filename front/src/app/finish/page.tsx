@@ -189,16 +189,16 @@ export default function FinishPage() {
         style={{ backgroundColor: "#2f5d37", color: "#fff" }}
       >
         <div className="mx-auto max-w-md px-4 py-8">
-          <h1 className="text-4xl font-bold text-center mb-6">冒険終了</h1>
+          <h1 className="dq-title text-center text-10xl sm:text-4xl mb-6">冒険終了</h1>
 
           {/* 累計ポイント */}
           <div className="text-center mb-6">
-            <p className="opacity-80">累計獲得Pt</p>
-            <p className="text-5xl font-mono">{totalPoints}pt</p>
+            <p className="total">累計獲得Pt</p>
+            <p className="points">{totalPoints}pt</p>
 
             {/* Distance */}
-            <p className="mt-3 opacity-80">移動距離</p>
-            <p className="text-2xl font-mono">{distance.toFixed(2)} km</p>
+            <p className="distancetitle">移動距離</p>
+            <p className="distance">{distance.toFixed(2)} km</p>
           </div>
 
 
@@ -214,20 +214,13 @@ export default function FinishPage() {
 
           {/* クエスト一覧 */}
           <section className="mb-8">
-            <h2 className="font-semibold mb-2">こなしたクエスト一覧</h2>
+            <h2 className="questfinish">こなしたクエスト一覧</h2>
             {quests.length === 0 ? (
               <p className="opacity-80">記録がありません。</p>
             ) : (
-              <ul className="space-y-2">
+              <ul className="quest-list space-y-2">
                 {quests.map((q) => (
-                  <li
-                    key={q.id}
-                    style={{
-                      background: "linear-gradient(90deg,#4d6bff,#36b4ff)",
-                      borderRadius: 18,
-                      padding: "10px 14px",
-                    }}
-                  >
+                  <li key={q.id}>
                     {q.title} (+{q.points}pt)
                   </li>
                 ))}
@@ -235,9 +228,11 @@ export default function FinishPage() {
             )}
           </section>
 
+
           {/* フッター */}
-          <div className="flex justify-center">
+          <div className="btn-center">
             <button
+              className="dq-btn"
               onClick={() => router.push("/quest")}
               style={{
                 background: "linear-gradient(90deg,#4d6bff,#36b4ff)",

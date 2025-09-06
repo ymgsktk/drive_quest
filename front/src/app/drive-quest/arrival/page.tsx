@@ -108,7 +108,6 @@ export default function AdventureScreen() {
           onClick={() => {
             if (!loading) {
               setLoading(true);
-              alert("冒険を終了しました。");
               router.push("/finish");
             }
           }}
