@@ -12,7 +12,7 @@ const KEYS = {
 
 type LatLng = { lat: number; lng: number };
 const center: LatLng = { lat: 35.0116, lng: 135.7681 };
-type Quest = { id: number; title: string; point: number };
+type Quest = { id: number; title: string; points: number };
 
 export default function FinishPage() {
   const [loaded, setLoaded] = useState(false);
@@ -217,7 +217,7 @@ export default function FinishPage() {
                       padding: "10px 14px",
                     }}
                   >
-                    {q.title} (+{q.point}pt)
+                    {q.title} (+{q.points}pt)
                   </li>
                 ))}
               </ul>
@@ -238,6 +238,7 @@ export default function FinishPage() {
               タイトルに戻る
             </button>
                       {/* データリセット（開発用） */}
+                      {/*
             <button
               onClick={() => {
                 const ls = window.localStorage;
@@ -272,6 +273,7 @@ export default function FinishPage() {
             >
               データをリセット
             </button>
+            */}
           </div>
         </div>
       </div>

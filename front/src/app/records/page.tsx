@@ -31,11 +31,12 @@ export default function RecordsPage() {
           return;
         }
 
-        const res = await fetch(`/api/runs/stats?username=${username}`);
+        const res = await fetch(`http://localhost:3050/api/runs/stats?username=${username}`);
         if (!res.ok) throw new Error("データ取得に失敗しました");
 
         const data: RunStats = await res.json();
         setStats(data);
+        console.log("サーバーから帰ってきた値：",data)
       } catch (err) {
         console.error("エラー:", err);
       } finally {
@@ -71,18 +72,18 @@ export default function RecordsPage() {
         <div>
           <div className="label">今回距離</div>
           <div className="value">
-            {stats?.latest.distanceKm ?? 0} <span style={{ fontSize: 14 }}>km</span>
+            {stats?.latest?.distanceKm ?? 0} <span style={{ fontSize: 14 }}>km</span>
           </div>
         </div>
         <div>
           <div className="label">今回ポイント</div>
           <div className="value">
-            {stats?.latest.pointEarned ?? 0} <span style={{ fontSize: 14 }}>pt</span>
+            {stats?.latest?.pointEarned ?? 0} <span style={{ fontSize: 14 }}>pt</span>
           </div>
         </div>
         <div>
           <div className="label">今回クエスト数</div>
-          <div className="value">{stats?.latest.completedQuests ?? 0}</div>
+          <div className="value">{stats?.latest?.completedQuests ?? 0}</div>
         </div>
         <div>
           <div className="label">累計距離</div>

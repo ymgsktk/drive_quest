@@ -12,7 +12,7 @@ const center: LatLng = { lat: 35.0116, lng: 135.7681 };
 
 // --- モックAPI関数 ---
 async function fetchTotalPoints(): Promise<number> {
-  return new Promise((resolve) => setTimeout(() => resolve(130), 500));
+  return new Promise((resolve) => setTimeout(() => resolve(0), 500));
 }
 
 async function fetchQuests(): Promise<Quest[]> {
