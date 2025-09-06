@@ -63,8 +63,8 @@ module Api
           id: r.id,
           distance: r.distance,
           points: r.points,
-          completedQuests: r.completed_quests? ? r.completed_quests : r.completed_quests # guard if typo ever
-        }.transform_keys! { _1 } # no-op; keeps clarity
+          completedQuests: r.completed_quests? 
+        }
       }
 
       next_cursor = nil

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_05_161412) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_06_044401) do
   create_table "adventure_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "points"
@@ -20,6 +20,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_05_161412) do
     t.datetime "updated_at", null: false
     t.datetime "started_at"
     t.datetime "ended_at"
+    t.index ["user_id", "ended_at"], name: "idx_adventure_records_user_ended_at", unique: true
     t.index ["user_id"], name: "index_adventure_records_on_user_id"
   end
 
