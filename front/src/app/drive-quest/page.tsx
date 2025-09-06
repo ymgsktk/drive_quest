@@ -119,15 +119,22 @@ export default function QuestSelectionScreen() {
   }, [mapRef.current]);
 
   const handleQuestSelect = (quest: Quest) => {
-    if (loading) return;
-    setLoading(true);
-    setTotalPoints((prev) => {
-      const newPoints = prev !== null ? prev + quest.points : quest.points;
-      localStorage.setItem("totalPoints", newPoints.toString());
-      return newPoints;
-    });
-    router.push("/drive-quest/arrival");
-  };
+  if (loading) return;
+  setLoading(true);
+
+  setTotalPoints((prev) => {
+    const newPoints = prev !== null ? prev + quest.points : quest.points;
+    localStorage.setItem("totalPoints", newPoints.toString());
+    return newPoints;
+  });
+
+  const savedQuests = JSON.parse(localStorage.getItem("quest") || "[]") as Quest[];
+
+  const updatedQuests = [...savedQuests, quest];
+  localStorage.setItem("quest", JSON.stringify(updatedQuests));
+  router.push("/drive-quest/arrival");
+};
+
 
   return (
     <div

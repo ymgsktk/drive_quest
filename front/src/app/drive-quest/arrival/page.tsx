@@ -124,7 +124,7 @@ export default function AdventureScreen() {
             if (!loading) {
               setLoading(true);
               alert("冒険を終了しました。");
-              router.push("/");
+              router.push("/finish");
             }
           }}
           disabled={loading}
