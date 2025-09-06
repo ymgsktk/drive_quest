@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   delete "sessions", to: "sessions#destroy" # ログアウト処理(SessionsController#destroy)
 
   namespace :api, defaults: { format: :json } do #front/src/app/test-apiの"http://localhost:3050/api/"
-    get :ping, to: "ping#index" #動作テスト部分(ping_controller.rbで何をフロントに送信するかを記述する)
+    get :ping, to: "ping#index"
 
     resources :adventure_records, only: [:create, :index] #create:記録作成、index:記録一覧の取得
     get "total_record", to: "total_records#show"
