@@ -30,70 +30,80 @@ export default function FinishPage() {
 
 
   const sendResult = async () => {
-    try {
-      const res = await fetch("http://localhost:3050/api/adventure_records", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          adventure_result: {
-            total_points: totalPoints,
-            user: user,        
-            distance: distance,
-            quest_count: quests.length,
-          },
-        }),
-      });
+  try {
+    console.log("送信する user:", user);
+    console.log("送信する totalPoints:", totalPoints);
+    console.log("送信する distance:", distance);
 
-      if (!res.ok) throw new Error("サーバーエラー");
-      const data = await res.json();
-      console.log("サーバーからのレスポンス:", data);
-    } catch (err) {
-      console.error("送信に失敗:", err);
-    }
-  };
+    const res = await fetch("http://localhost:3050/api/adventure_records", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        adventure_result: {
+          total_points: totalPoints,
+          user: user,        
+          distance: distance,
+          quest_count: quests.length,
+        },
+      }),
+    });
+
+    if (!res.ok) throw new Error("サーバーエラー");
+    const data = await res.json();
+    console.log("サーバーからのレスポンス:", data);
+  } catch (err) {
+    console.error("送信に失敗:", err);
+  }
+};
+
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const ls = window.localStorage;
+  if (typeof window === "undefined") return;
+  const ls = window.localStorage;
 
-    // デモデータ
-    if (!ls.getItem(KEYS.totalPoints)) {
-      ls.setItem(KEYS.totalPoints, "180");
-      ls.setItem("user", "ドライバーA"); 
-      ls.setItem(
-        KEYS.routeHistory,
-        JSON.stringify([
-          { lat: 35.0, lng: 135.0 },
-          { lat: 35.05, lng: 135.1 },
-          { lat: 35.1, lng: 135.15 },
-        ])
-      );
-      ls.setItem(
-        KEYS.quest,
-        JSON.stringify([
-          { id: 1, title: "神社に行く", point: 50 },
-          { id: 2, title: "カフェに行く", point: 30 },
-          { id: 3, title: "駅の写真を撮る", point: 40 },
-        ])
-      );
-    }
+  // デモデータ
+  if (!ls.getItem(KEYS.totalPoints)) {
+    ls.setItem(KEYS.totalPoints, "180");
+    ls.setItem("user", "ドライバーA"); 
+    ls.setItem(
+      KEYS.routeHistory,
+      JSON.stringify([
+        { lat: 35.0, lng: 135.0 },
+        { lat: 35.05, lng: 135.1 },
+        { lat: 35.1, lng: 135.15 },
+      ])
+    );
+    ls.setItem(
+      KEYS.quest,
+      JSON.stringify([
+        { id: 1, title: "神社に行く", points: 50 },
+        { id: 2, title: "カフェに行く", points: 30 },
+        { id: 3, title: "駅の写真を撮る", points: 40 },
+      ])
+    );
+  }
 
-    setTotalPoints(Number(ls.getItem(KEYS.totalPoints) ?? 0));
+  setTotalPoints(Number(ls.getItem(KEYS.totalPoints) ?? 0));
 
-    try {
-      setRouteHistory(JSON.parse(ls.getItem(KEYS.routeHistory) ?? "[]"));
-    } catch {
-      setRouteHistory([]);
-    }
+  try {
+    setRouteHistory(JSON.parse(ls.getItem(KEYS.routeHistory) ?? "[]"));
+  } catch {
+    setRouteHistory([]);
+  }
 
-    try {
-      setQuests(JSON.parse(ls.getItem(KEYS.quest) ?? "[]"));
-    } catch {
-      setQuests([]);
-    }
+  try {
+    setQuests(JSON.parse(ls.getItem(KEYS.quest) ?? "[]"));
+  } catch {
+    setQuests([]);
+  }
 
-    setLoaded(true);
-  }, []);
+  // ← localStorage からユーザー名を取得して setUser
+  const storedUser = ls.getItem("user");
+  if (storedUser) setUser(storedUser);
+
+  setLoaded(true);
+}, []);
+
 
   useEffect(() => {
     if (routeHistory.length < 2) {
@@ -158,12 +168,13 @@ export default function FinishPage() {
 
  
 
+   // distance 計算後に送信
   useEffect(() => {
-    if (loaded && totalPoints > 0 && !sent) {
+    if (!sent && loaded && distance > 0) {
       sendResult();
-      setSent(true); // 1回だけ実行
+      setSent(true);
     }
-  }, [loaded, totalPoints, distance, quests, sent]);
+  }, [distance, loaded, sent]);
   
   
   if (!loaded) return null;

@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 interface RunStats {
   latest: {
     id: string;
-    distanceKm: number;
-    pointEarned: number;
+    distance: number;
+    points: number;
     completedQuests: number;
   };
   totals: {
-    distanceKm: number;
-    pointEarned: number;
+    distance: number;
+    points: number;
     completedQuests: number;
   };
 }
@@ -61,7 +61,7 @@ export default function RecordsPage() {
       <div className="dq-totalpoints">
         <span className="dq-title">累計獲得</span>
         <span className="dq-points pixel" style={{ fontFamily: "var(--font-pixel)" }}>
-          {stats?.totals.pointEarned ?? 0}
+          {stats?.totals.points ?? 0}
         </span>
         <span className="pixel" style={{ fontSize: 20, lineHeight: "1", fontFamily: "var(--font-pixel)" }}>
           pt
@@ -72,13 +72,13 @@ export default function RecordsPage() {
         <div>
           <div className="label">今回距離</div>
           <div className="value">
-            {stats?.latest?.distanceKm ?? 0} <span style={{ fontSize: 14 }}>km</span>
+            {stats?.latest?.distance ?? 0} <span style={{ fontSize: 14 }}>km</span>
           </div>
         </div>
         <div>
           <div className="label">今回ポイント</div>
           <div className="value">
-            {stats?.latest?.pointEarned ?? 0} <span style={{ fontSize: 14 }}>pt</span>
+            {stats?.latest?.points ?? 0} <span style={{ fontSize: 14 }}>pt</span>
           </div>
         </div>
         <div>
@@ -88,13 +88,13 @@ export default function RecordsPage() {
         <div>
           <div className="label">累計距離</div>
           <div className="value">
-            {stats?.totals.distanceKm ?? 0} <span style={{ fontSize: 14 }}>km</span>
+            {stats?.totals.distance ?? 0} <span style={{ fontSize: 14 }}>km</span>
           </div>
         </div>
         <div>
           <div className="label">累計ポイント</div>
           <div className="value">
-            {stats?.totals.pointEarned ?? 0} <span style={{ fontSize: 14 }}>pt</span>
+            {stats?.totals.points ?? 0} <span style={{ fontSize: 14 }}>pt</span>
           </div>
         </div>
         <div>
