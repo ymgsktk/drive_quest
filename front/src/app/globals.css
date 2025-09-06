@@ -36,7 +36,7 @@ html, body {
 }
 
 /* 見出し */
-.dq-title { font-weight: 900; font-size: 35px; margin: 8px 0 4px; }
+.dq-title { font-weight: 900; font-size: 35px; margin: 8px 0 4px; text-align: center; }
 .dq-sub { opacity: .9; margin: 16px 0; font-size: 28px; }
 
 /* ボタン */

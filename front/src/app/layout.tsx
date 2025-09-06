@@ -1,6 +1,7 @@
-// front/src/app/layout.tsx
+// app/layout.tsx
 import './globals.css';
 import type { Metadata } from 'next';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'ドライブクエスト',
@@ -14,8 +15,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      {/* フォントは globals.css で設定済み */}
-      <body>{children}</body>
+      <head />
+      <body>
+        {/* Google Maps API */}
+        <Script
+          id="google-maps"
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}&libraries=places`}
+          strategy="afterInteractive"
+        />
+        {children}
+      </body>
     </html>
   );
 }

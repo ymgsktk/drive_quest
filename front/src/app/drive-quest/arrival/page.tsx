@@ -104,18 +104,6 @@ export default function AdventureScreen() {
         >
           冒険を進める
         </button>
-        <button
-          onClick={() => {
-            if (!loading) {
-              setLoading(true);
-              router.push("/finish");
-            }
-          }}
-          disabled={loading}
-          className={`dq-finishquest flex-1 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-        >
-          冒険を終了する
-        </button>
       </div>
 
     </div>

@@ -154,37 +154,51 @@ export default function QuestSelectionScreen() {
           <div ref={mapRef} style={mapContainerStyle} />
         </div>
       </div>
+      <div className="dq-button-group flex flex-col sm:flex-row justify-center items-center gap-4 mt-4">
+      <button
+          onClick={() => {
+            if (!loading) {
+              setLoading(true);
+              router.push("/finish");
+            }
+          }}
+          disabled={loading}
+          className={`dq-finishquest flex-1 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+        >
+          冒険を終了する
+        </button>
+        </div>
 
       {/* 観光地 */}
       <div className="w-full max-w-3xl">
-        <h2 className="dq-sub mb-4 text-center">近くの観光地・カフェ</h2>
-        <div className="grid gap-4 md:grid-cols-2">
-          {spots.length > 0 ? (
-            spots.map((spot) => (
-              <a
-                key={spot.id}
-                href={spot.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="dq-card flex flex-col md:flex-row items-center p-4 shadow-lg hover:scale-[1.03] hover:shadow-2xl transition-transform"
-              >
-                <img
-                  src={spot.image}
-                  alt={spot.name}
-                  className="h-28 w-28 flex-shrink-0 rounded-xl object-cover mb-2 md:mb-0 md:mr-4"
-                />
-                <div className="flex-grow">
-                  <h3 className="text-lg font-bold mb-1">{spot.name}</h3>
-                  <p className="text-sm text-gray-800">{spot.description}</p>
-                  <p className="mt-2 text-sm text-blue-500 hover:underline">{spot.url}</p>
-                </div>
-              </a>
-            ))
-          ) : (
-            <p className="text-center text-gray-400">Loading spots...</p>
-          )}
-        </div>
-      </div>
+  <h2 className="dq-sub mb-4 text-center">近くの観光地・カフェ</h2>
+  <div className="grid gap-4 md:grid-cols-2">
+    {spots.length > 0 ? (
+      spots.slice(0, 5).map((spot) => (   // ← 最初の5件だけ
+        <a
+          key={spot.id}
+          href={spot.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="dq-card flex flex-col md:flex-row items-center p-4 shadow-lg hover:scale-[1.03] hover:shadow-2xl transition-transform"
+        >
+          <img
+            src={spot.image}
+            alt={spot.name}
+            className="h-28 w-28 flex-shrink-0 rounded-xl object-cover mb-2 md:mb-0 md:mr-4"
+          />
+          <div className="flex-grow">
+            <h3 className="text-lg font-bold mb-1">{spot.name}</h3>
+            <p className="text-sm text-gray-800">{spot.description}</p>
+            <p className="mt-2 text-sm text-blue-500 hover:underline">{spot.url}</p>
+          </div>
+        </a>
+      ))
+    ) : (
+      <p className="text-center text-gray-400">Loading spots...</p>
+    )}
+  </div>
+</div>
     </div>
   );
 }

@@ -230,10 +230,13 @@ export default function FinishPage() {
 
 
           {/* フッター */}
-          <div className="btn-center">
+          <div className="dq-button-group flex flex-col sm:flex-row justify-center items-center gap-4 mt-4">
             <button
               className="dq-btn"
-              onClick={() => router.push("/quest")}
+              onClick={() => {
+                localStorage.clear();
+                router.push("/");
+              }}
               style={{
                 background: "linear-gradient(90deg,#4d6bff,#36b4ff)",
                 borderRadius: 18,

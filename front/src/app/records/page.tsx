@@ -70,19 +70,19 @@ export default function RecordsPage() {
 
       <div className="dq-stat">
         <div>
-          <div className="label">今回距離</div>
+          <div className="label">直近の距離</div>
           <div className="value">
             {stats?.latest?.distance ?? 0} <span style={{ fontSize: 14 }}>km</span>
           </div>
         </div>
         <div>
-          <div className="label">今回ポイント</div>
+          <div className="label">直近のポイント</div>
           <div className="value">
             {stats?.latest?.points ?? 0} <span style={{ fontSize: 14 }}>pt</span>
           </div>
         </div>
         <div>
-          <div className="label">今回クエスト数</div>
+          <div className="label">直近のクエスト数</div>
           <div className="value">{stats?.latest?.completedQuests ?? 0}</div>
         </div>
         <div>
@@ -103,19 +103,12 @@ export default function RecordsPage() {
         </div>
       </div>
 
-      <h2 className="dq-sub pixel" style={{ fontFamily: "var(--font-pixel)" }}>
-        これまでのルート
-      </h2>
-
-      {/* ルート履歴は別 API が必要かも？ */}
-      <p>まだ履歴のリスト表示部分は未実装です。</p>
-
+    <div className="dq-button-group flex flex-col sm:flex-row justify-center items-center gap-4 mt-4">
       <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
-        <button className="dq-btn">テストデータを追加</button>
-        <button className="dq-btn">記録をリセット</button>
         <button className="dq-btn" onClick={() => router.push("/")}>
           ホームへ戻る
         </button>
+      </div>
       </div>
     </main>
   );
