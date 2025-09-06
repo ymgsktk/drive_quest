@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Press_Start_2P } from 'next/font/google';
 
-
 // タイトル用：Press Start 2P
 const press = Press_Start_2P({
   weight: '400',
@@ -12,8 +11,7 @@ const press = Press_Start_2P({
   variable: '--font-press',
 });
 
-const FIXED_USERNAME = 'nttdata_001';
-const LS_KEY = 'dq_username';
+const LS_KEY = 'user';
 
 export default function Home() {
   const router = useRouter();
@@ -28,11 +26,12 @@ export default function Home() {
     setHydrated(true);
   }, []);
 
-  const isValid = name.trim() === FIXED_USERNAME;
+  // 空文字でなければボタン押せるように
+  const isValid = name.trim() !== '';
 
   const persistAnd = (next: () => void) => {
     try {
-      localStorage.setItem(LS_KEY, FIXED_USERNAME);
+      localStorage.setItem(LS_KEY, name.trim());
     } catch (_) {}
     next();
   };
@@ -48,14 +47,7 @@ export default function Home() {
   };
 
   return (
-    <main
-      className="dq-container"
-      style={{
-        minHeight: '72vh',
-        display: 'grid',
-        placeItems: 'center',
-      }}
-    >
+    <main className="dq-container" style={{ minHeight: '72vh', display: 'grid', placeItems: 'center' }}>
       <div
         style={{
           width: 'min(760px, 92vw)',
@@ -66,49 +58,27 @@ export default function Home() {
           textAlign: 'center',
         }}
       >
-        {/* ← ここで Press Start 2P を確実適用 */}
-       <h1 className="dq-title">〜ドライブクエスト〜</h1>
-<div className="dq-title-sub">DRIVE QUEST</div>
+        <h1 className="dq-title">〜ドライブクエスト〜</h1>
+        <div className="dq-title-sub">DRIVE QUEST</div>
 
-        <label
-          className="dq-sub"
-          htmlFor="username"
-          style={{
-            display: 'block',
-            marginTop: 24,
-            textAlign: 'center',
-            width: '100%',
-          }}
-        >
+        <label className="dq-sub" htmlFor="username" style={{ display: 'block', marginTop: 24 }}>
           ユーザー名
         </label>
 
         <input
           id="username"
           className="dq-input"
-          placeholder="例: nttdata_001"
+          placeholder="ユーザー名を入力"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
 
-        <div
-          style={{
-            display: 'flex',
-            gap: 16,
-            marginTop: 24,
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-          }}
-        >
+        <div style={{ display: 'flex', gap: 16, marginTop: 24, justifyContent: 'center', flexWrap: 'wrap' }}>
           <button
             className="dq-btn"
             onClick={handleStart}
             disabled={!isValid}
-            style={{
-              opacity: isValid ? 1 : 0.6,
-              pointerEvents: isValid ? 'auto' : 'none',
-              minWidth: 220,
-            }}
+            style={{ opacity: isValid ? 1 : 0.6, pointerEvents: isValid ? 'auto' : 'none', minWidth: 220 }}
           >
             冒険を開始する
           </button>
@@ -117,27 +87,11 @@ export default function Home() {
             className="dq-btn"
             onClick={goRecords}
             disabled={!isValid}
-            style={{
-              opacity: isValid ? 1 : 0.6,
-              pointerEvents: isValid ? 'auto' : 'none',
-              minWidth: 220,
-            }}
+            style={{ opacity: isValid ? 1 : 0.6, pointerEvents: isValid ? 'auto' : 'none', minWidth: 220 }}
           >
             記録ページへ
           </button>
         </div>
-
-        {!isValid && (
-          <p
-            className="dq-sub"
-            style={{
-              marginTop: 12,
-              textAlign: 'center',
-              opacity: 0.85,
-            }}
-          >
-          </p>
-        )}
       </div>
     </main>
   );

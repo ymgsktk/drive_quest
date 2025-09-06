@@ -1,14 +1,6 @@
 // front/src/app/layout.tsx
 import './globals.css';
 import type { Metadata } from 'next';
-import { DotGothic16 } from 'next/font/google';
-
-// 本文用：ドットゴシック
-const dot = DotGothic16({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-dot',
-});
 
 export const metadata: Metadata = {
   title: 'ドライブクエスト',
@@ -22,8 +14,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      {/* 本文フォントを body に適用 */}
-      <body className={dot.className}>{children}</body>
+      {/* フォントは globals.css で設定済み */}
+      <body>{children}</body>
     </html>
   );
 }

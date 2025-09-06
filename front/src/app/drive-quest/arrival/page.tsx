@@ -81,9 +81,9 @@ export default function AdventureScreen() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl space-y-8 px-4">
+    <div className="dq-container bg-dq-green min-h-screen px-4 py-8 flex flex-col items-center">
       {/* タイトル */}
-      <h1 className="text-black text-4xl font-bold text-center mt-8 mb-4 font-misaki">
+      <h1 className="dq-title text-center text-10xl sm:text-4xl mb-6">
         ~ドライブクエスト~
       </h1>
       <h2 className="text-black text-xl text-center font-semibold mb-6 font-misaki">
@@ -95,27 +95,12 @@ export default function AdventureScreen() {
         <div ref={mapRef} style={mapContainerStyle}></div>
       </div>
 
-      {/* 選択座標 */}
-      {selectedLocation && (
-        <p className="text-center text-black mt-2 font-misaki">
-          選択された座標: {selectedLocation.lat.toFixed(4)}, {selectedLocation.lng.toFixed(4)}
-        </p>
-      )}
-
       {/* ボタン群 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+      <div className="dq-button-group flex flex-col sm:flex-row justify-center items-center gap-4 mt-4">
         <button
           onClick={handleComplete}
           disabled={loading}
-          className={`
-            flex h-16 items-center justify-center
-            bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500
-            text-black font-misaki text-lg font-bold
-            border border-black rounded-md
-            shadow-lg transition-transform duration-150
-            hover:scale-105 hover:shadow-xl active:scale-95
-            ${loading ? "opacity-50 cursor-not-allowed" : ""}
-          `}
+          className={`dq-btn flex-1 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           冒険を進める
         </button>
@@ -124,23 +109,16 @@ export default function AdventureScreen() {
             if (!loading) {
               setLoading(true);
               alert("冒険を終了しました。");
-              router.push("/");
+              router.push("/finish");
             }
           }}
           disabled={loading}
-          className={`
-            flex h-16 items-center justify-center
-            bg-gradient-to-r from-red-400 to-pink-500
-            text-white font-jp text-lg font-bold
-            border border-black rounded-md
-            shadow-lg transition-transform duration-150
-            hover:scale-105 hover:shadow-xl active:scale-95
-            ${loading ? "opacity-50 cursor-not-allowed" : ""}
-          `}
+          className={`dq-finishquest flex-1 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           冒険を終了する
         </button>
       </div>
+
     </div>
   );
 }
