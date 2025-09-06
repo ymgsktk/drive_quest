@@ -26,6 +26,8 @@ export default function FinishPage() {
   const directionsRenderer = useRef<google.maps.DirectionsRenderer | null>(null);
   const [distance, setDistance] = useState(0);
   const [sent, setSent] = useState(false);
+  const [user, setUser] = useState("ゲスト");
+
 
   const sendResult = async () => {
     try {
@@ -35,6 +37,7 @@ export default function FinishPage() {
         body: JSON.stringify({
           adventure_result: {
             total_points: totalPoints,
+            user: user,        
             distance: distance,
             quest_count: quests.length,
           },
@@ -56,6 +59,7 @@ export default function FinishPage() {
     // デモデータ
     if (!ls.getItem(KEYS.totalPoints)) {
       ls.setItem(KEYS.totalPoints, "180");
+      ls.setItem("user", "ドライバーA"); 
       ls.setItem(
         KEYS.routeHistory,
         JSON.stringify([
@@ -238,6 +242,7 @@ export default function FinishPage() {
               onClick={() => {
                 const ls = window.localStorage;
                 ls.setItem(KEYS.totalPoints, "180");
+                ls.setItem("user", "ドライバーA"); 
                 ls.setItem(
                   KEYS.routeHistory,
                   JSON.stringify([
